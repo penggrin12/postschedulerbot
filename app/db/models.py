@@ -1,4 +1,5 @@
 from __future__ import annotations
+from asyncio import Lock
 from enum import StrEnum, auto
 
 from piccolo.columns import (
@@ -10,9 +11,13 @@ from piccolo.table import Table
 
 
 __all__: list[str] = [
+    "user_lock",
+    "post_lock",
     "User",
     "Post",
 ]
+user_lock = Lock()
+post_lock = Lock()
 
 
 class User(Table):

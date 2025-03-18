@@ -7,7 +7,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from app import states
 from app.bot import bot, dp
 from app.config import config
-from app.db.models import Post
+from app.db.models import Post, post_lock
 
 
 @dp.callback_query(F.data == "new-post")
@@ -53,14 +53,17 @@ async def handler_waiting_for_post(message: Message, state: FSMContext) -> None:
         )
     )
 
-    await Post(
-        {
-            Post.chat_id: config.test_chat_id,
-            Post.text: message.html_text if (message.text or message.caption) else None,
-            Post.media_file_id: content_id,
-            Post.media_type: message.content_type,
-        }
-    ).save()
+    async with post_lock:
+        await Post(
+            {
+                Post.chat_id: config.test_chat_id,
+                Post.text: message.html_text if (message.text or message.caption) else None,
+                Post.media_file_id: content_id,
+                Post.media_type: message.content_type,
+            }
+        ).save()
+
+    return  # TODO: for now
 
     data = await state.get_data()
     await state.clear()
