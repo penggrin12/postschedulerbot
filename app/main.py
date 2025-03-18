@@ -47,30 +47,55 @@ async def run_scheduler() -> None:
 
             match post.media_type:
                 case ContentType.TEXT:
-                    await bot.send_message(chat_id=post.chat_id, text=post.text)
+                    await bot.send_message(
+                        chat_id=post.chat_id,
+                        text=post.text,
+                        parse_mode="HTML",
+                    )
                 case ContentType.PHOTO:
                     await bot.send_photo(
-                        chat_id=post.chat_id, caption=post.text, photo=post.media_file_id
+                        chat_id=post.chat_id,
+                        caption=post.text,
+                        photo=post.media_file_id,
+                        parse_mode="HTML",
                     )
                 case ContentType.VIDEO:
                     await bot.send_video(
-                        chat_id=post.chat_id, caption=post.text, video=post.media_file_id
+                        chat_id=post.chat_id,
+                        caption=post.text,
+                        video=post.media_file_id,
+                        parse_mode="HTML",
                     )
                 case ContentType.VIDEO_NOTE:
-                    await bot.send_video_note(chat_id=post.chat_id, video_note=post.media_file_id)
+                    await bot.send_video_note(
+                        chat_id=post.chat_id,
+                        video_note=post.media_file_id,
+                    )
                 case ContentType.ANIMATION:
                     await bot.send_animation(
-                        chat_id=post.chat_id, caption=post.text, animation=post.media_file_id
+                        chat_id=post.chat_id,
+                        caption=post.text,
+                        animation=post.media_file_id,
+                        parse_mode="HTML",
                     )
                 case ContentType.AUDIO:
                     await bot.send_audio(
-                        chat_id=post.chat_id, caption=post.text, audio=post.media_file_id
+                        chat_id=post.chat_id,
+                        caption=post.text,
+                        audio=post.media_file_id,
+                        parse_mode="HTML",
                     )
                 case ContentType.STICKER:
-                    await bot.send_sticker(chat_id=post.chat_id, sticker=post.media_file_id)
+                    await bot.send_sticker(
+                        chat_id=post.chat_id,
+                        sticker=post.media_file_id,
+                    )
                 case _:
                     await bot.send_document(
-                        chat_id=post.chat_id, caption=post.text, document=post.media_file_id
+                        chat_id=post.chat_id,
+                        caption=post.text,
+                        document=post.media_file_id,
+                        parse_mode="HTML",
                     )
 
     scheduler._eventloop = loop
